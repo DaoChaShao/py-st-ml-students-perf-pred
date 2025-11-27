@@ -1,0 +1,53 @@
+<!-- insertion marker -->
+<a name="0.1.0"></a>
+
+## [0.1.0](https://github.com///compare/fab183404da628781aea3fe154020d224efbc985...0.1.0) (2025-11-27)
+
+### Features
+
+- update uv.lock to include pillow dependency ([a644db8](https://github.com///commit/a644db8e80d21c4b42807495ba99fd036c9c4db6))
+- add pillow dependency for image processing ([2cd22b2](https://github.com///commit/2cd22b2eba62c48c4dac8f8bd3e34ac88cb1c640))
+- add uv.lock ([e7df97e](https://github.com///commit/e7df97e653d3a9e8374e7cea903a89b764bfd9ef))
+- add student-por.csv with student attributes for analysis ([a9ef4aa](https://github.com///commit/a9ef4aa9d53e9acc13d779cd50d2ccff7e389bac))
+- add student-mat.csv with student attributes for analysis ([e8a6edf](https://github.com///commit/e8a6edf96d8665d3dd90c624e7124c1eaf1b83cb))
+- add student.txt with attributes for student datasets ([4a53a09](https://github.com///commit/4a53a09b4b86308e692a74c1ef9fad6008aa48da))
+- add stats.py with data loading, preprocessing, and PCA feature importance functions ([3f54752](https://github.com///commit/3f5475279b755a49be39eede33ad45a1bf5c0110))
+- add seq_prediction.py with SeqTorchDatasetForPrediction class for sequential data handling ([c498f64](https://github.com///commit/c498f644cecfcfe2a86fcb84f69e0e12bf26ae00))
+- add seq_classes.py with RNNClassificationTorchTrainer class for training RNN models ([233ba16](https://github.com///commit/233ba165218bd21315ede1aea8bdc53eb92a372b))
+- add seq_classes.py with RNNModelForClassification class for multi-class classification tasks ([31e7a95](https://github.com///commit/31e7a95fb6743fc7eba097abf8743abcd4829c41))
+- add seq_classes.py with SeqTorchDatasetForClassification class for sequential data handling ([09ec16e](https://github.com///commit/09ec16efa1477717ce6b5a2a69ba0a11a5eb9c3d))
+- add sem_standard5.py with Standard5LayersUNet class for enhanced UNet architecture ([58bcc94](https://github.com///commit/58bcc942b6a1b7a872f32460ddef381ae372560e))
+- add sem_standard4.py with Standard4LayersUNet class for UNet architecture implementation ([39e956a](https://github.com///commit/39e956a4c2b46db8422a192895959944eddeec3b))
+- add sem_segmentation.py with SemSegDataset class for custom dataset handling ([12b4236](https://github.com///commit/12b4236177f605cb039dc7e4b1575224aed22cc4))
+- add sem_focal.py with FocalLoss class for binary segmentation tasks ([b7a6e49](https://github.com///commit/b7a6e49d19a54b76fa8a839143e70a8af64cf4c5))
+- add sem_edge.py with EdgeAwareLoss class for edge-aware loss calculation ([5a96969](https://github.com///commit/5a969692bc4d5c7745043dc14133440b57d82ae6))
+- add sem_dnf.py with ComprehensiveLossWithDiceAndFocal class for combined loss calculation ([8b9575f](https://github.com///commit/8b9575f37222a6920f0fbe4115a70488572a43ef))
+- add sem_dice.py with DiceBCELoss class for combined loss calculation ([452b8c4](https://github.com///commit/452b8c411f007c6686809a8e4fe9a8c5150bf6c2))
+- add sem_classes.py with BinaryIoU and Evaluator classes for segmentation metrics ([3ca5ce2](https://github.com///commit/3ca5ce2bd297a46638c23991cf2cbf69b5672603))
+- add reshaper.py with function to reshape flattened tensor to grayscale ([b8a25eb](https://github.com///commit/b8a25eb7afb35d85868a36b7db48d342e1f05bbe))
+- add Chinese README.md with project overview, data description, privacy notice, environment setup, and changelog instructions ([5c9a9bc](https://github.com///commit/5c9a9bcee8e8baa8b2a2986ae9eb68e8e4c95934))
+- add comprehensive README.md with project introduction, data description, privacy notice, environment setup, and changelog instructions ([6d7acb0](https://github.com///commit/6d7acb016bbfed3c777639d7a030bb7376b54a6f))
+- update pyproject.toml with project description and dependencies ([251ffc0](https://github.com///commit/251ffc0de2971795d807930b94a3e072a7c50243))
+- add PT.py with custom classes and functions for random seed management and device handling ([b209468](https://github.com///commit/b2094684d65069208831308821fb086d4b32e794))
+- add predictor.py with main function as entry point ([b084a9a](https://github.com///commit/b084a9abc2fbd45a286b010d8bf63e7444d377e1))
+- add mse_log.py with log_mse_loss function for calculating Log Mean Squared Error Loss ([45ba2be](https://github.com///commit/45ba2be1b7b4f38e4cf01d5f74d8cdf9e7047021))
+- add mask_map.py with mask_map_class_id function for converting mask pixel values to class IDs ([11266f5](https://github.com///commit/11266f571bcc85f1435d63282a675ebbd94ee265))
+- add label_classes.py with custom LabelTorchDatasetForClassification for handling features and labels ([ff79676](https://github.com///commit/ff79676b79b227988c8718f5c6915c8829944388))
+- add highlighter.py with functions for text highlighting and formatting ([0585a89](https://github.com///commit/0585a89713f887c17c787ac209befed649345198))
+- add helper.py with Timer, Beautifier, and RandomSeed context managers for enhanced code functionality ([743bdc6](https://github.com///commit/743bdc6dc30b655c2d545a022ea976d0905f2813))
+- add general.py with custom TorchDataLoader class for dataset handling ([6db9cad](https://github.com///commit/6db9cad13eb1978844b047f590822cf7e352d06a))
+- add decorator.py with timing and beautifying decorators for function output ([bf5dc14](https://github.com///commit/bf5dc146ad169c08cc8c9fc7e3a36f690262a0ad))
+- add config.py for model configurations and hyperparameters management ([432f410](https://github.com///commit/432f410a67073fb8b180bb03278284e59fcafab4))
+- add __init__.py for Comprehensive ML Framework with core modules and key features ([a6776d7](https://github.com///commit/a6776d77b14e2dbbb11464cd77930cb372f8d963))
+- add __init__.py for Utility Module with comprehensive ML/Data processing toolkit ([93e179f](https://github.com///commit/93e179f88fc4530bb503a26a2045b0991962f8b5))
+- add __init__.py for Neural Nets Trainer Module with specialized trainer classes ([be8ba40](https://github.com///commit/be8ba40aaf8558706f6c66c5b4ad4dcbf625f105))
+- add __init__.py for Neural Nets Module with various architectures ([7dcfa89](https://github.com///commit/7dcfa89458340138e19812897e85badea5afbcea))
+- add __init__.py for Datasets Module with specialized PyTorch Dataset implementations ([2900b81](https://github.com///commit/2900b81f6fe5f957b936173f0867f266263c8777))
+- add __init__.py for Dataloader Module with custom PyTorch DataLoader wrapper ([7c378f0](https://github.com///commit/7c378f018a61d4059d58dd762aee1a7147051447))
+- add __init__.py for Criterion Module with specialized loss functions ([9aafed0](https://github.com///commit/9aafed0b221f829fd1afb6bded7c157b8974a019))
+- add .gitignore to exclude Python and IDE-specific files ([c4170b5](https://github.com///commit/c4170b589b40ba2b2513e7947d407b5557a694e9))
+
+### Bug Fixes
+
+- ensure main function is called and add newline at end of file ([a728895](https://github.com///commit/a7288955c6a3e68bc5dfa09948ad36ecaf7c0d44))
+
