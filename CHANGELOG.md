@@ -69,10 +69,14 @@
 
 ### Chore
 
-- update CHANGELOG.md with recent feature additions and improvements ([9dfd4bd](https://github.com///commit/9dfd4bdf2a0f87c95c8f5186cd83387776c8e4d0))
+- update CHANGELOG.md with recent feature additions and improvements ([78bfc07](https://github.com///commit/78bfc07b5bb7384daf9631b0567bfbaaf8c80183))
 
 ### Docs
 
 - update Chinese README to include new features for data import, feature analysis, and model evaluation ([9da9538](https://github.com///commit/9da953889befd24f3cfca95e3468bbfb27bea47a))
 - update README.md to include new features for data import, processing, and model evaluation ([d4b4902](https://github.com///commit/d4b4902d9cc564f6f80e98fd2bf26b7d35684540))
+
+### Code Refactoring
+
+- remove unused GrayTensorReshaper and TorchDataLoader classes from PT.py ([e62d8fc](https://github.com///commit/e62d8fc475d125b8e18294dacd465104294fafb6))
 
