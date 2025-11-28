@@ -67,3 +67,12 @@
 
 - ensure main function is called and add newline at end of file ([a728895](https://github.com///commit/a7288955c6a3e68bc5dfa09948ad36ecaf7c0d44))
 
+### Chore
+
+- update CHANGELOG.md with recent feature additions and improvements ([9dfd4bd](https://github.com///commit/9dfd4bdf2a0f87c95c8f5186cd83387776c8e4d0))
+
+### Docs
+
+- update Chinese README to include new features for data import, feature analysis, and model evaluation ([9da9538](https://github.com///commit/9da953889befd24f3cfca95e3468bbfb27bea47a))
+- update README.md to include new features for data import, processing, and model evaluation ([d4b4902](https://github.com///commit/d4b4902d9cc564f6f80e98fd2bf26b7d35684540))
+
