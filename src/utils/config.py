@@ -33,7 +33,7 @@ class DataPreprocessor:
 
 
 @dataclass
-class ModelParams:
+class MLPParams:
     DROPOUT_RATE: float = 0.2
     HIDDEN_UNITS: int = 256
 
@@ -73,7 +73,7 @@ class Hyperparameters:
 class Configuration:
     FILEPATHS: FilePaths = field(default_factory=FilePaths)
     PREPROCESSOR: DataPreprocessor = field(default_factory=DataPreprocessor)
-    MODEL_PARAMS: ModelParams = field(default_factory=ModelParams)
+    MLP_PARAMS: MLPParams = field(default_factory=MLPParams)
     CNN_PARAMS: CNNParams = field(default_factory=CNNParams)
     RNN_PARAMS: RNNParams = field(default_factory=RNNParams)
     UNET_PARAMS: UNetParams = field(default_factory=UNetParams)
