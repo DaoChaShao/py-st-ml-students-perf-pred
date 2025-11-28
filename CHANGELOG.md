@@ -5,6 +5,11 @@
 
 ### Features
 
+- change tensor data type from int64 to float32 for label conversion in PT.py ([df6d75e](https://github.com///commit/df6d75e6c1383eee440bc79579f8137444434dd4))
+- implement data preprocessing and prediction in predictor.py ([a764adf](https://github.com///commit/a764adfaf7193944a1709b0431e5b181ef06cb40))
+- update model parameter references from MODEL_PARAMS to MLP_PARAMS for consistency ([4bde943](https://github.com///commit/4bde943be7e4317a4eb2a478351140156c9871f7))
+- rename ModelParams to MLPParams for clarity in configuration ([123b3d3](https://github.com///commit/123b3d33f1e500f0191342e0a9f676cdc2640f78))
+- update CHANGELOG.md for version 0.1.0 with feature summaries and new module exports ([2fa2623](https://github.com///commit/2fa2623f0433732b48e9f4bb9eb8dfabab673eb3))
 - enhance data handling with new split and correlation functions in stats.py ([eacab0d](https://github.com///commit/eacab0d27778c1bc68f5545e8aa686edc74288d8))
 - add RegressionTorchTrainer class for managing training process of regression models ([9c62608](https://github.com///commit/9c6260844e3764875ff706c6cd4749d296fe5c0b))
 - add RegressionTorchModel class for fully connected neural network ([22ba642](https://github.com///commit/22ba64225bad0d6cf017e4f93b6bc41c102d47b9))
