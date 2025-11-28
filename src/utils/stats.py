@@ -7,8 +7,8 @@
 # @Desc     :   
 
 from json import load, dump
-from numpy import ndarray, cumsum, argmax, random as np_random
-from pandas import DataFrame, read_csv
+from numpy import ndarray, cumsum, argmax, random as np_random, sum as np_sum, array, sqrt
+from pandas import DataFrame, read_csv, Series, crosstab
 from pprint import pprint
 from pathlib import Path
 from random import shuffle
@@ -75,8 +75,8 @@ def load_csv(csv_path: str) -> tuple[DataFrame, DataFrame]:
     """
     dataset: DataFrame = read_csv(csv_path)
 
-    y: DataFrame = dataset[:, -1]
-    X: DataFrame = dataset.drop(dataset.columns[0], axis=1)
+    y: DataFrame = DataFrame(dataset.iloc[:, -1])
+    X: DataFrame = dataset.iloc[:, :-1]
 
     print(f"X's type is {type(X)}, and its shape is {X.shape}.")
     print(f"y's type is {type(y)}, and its shape is {y.shape}.")
@@ -167,108 +167,7 @@ def split_paths(image_paths: list, mask_paths: list, test_size: float = 0.2, shu
 
 
 @timer
-def split_data(data: list[tuple[str, int]], test_size: float = 0.2, shuffle_status: bool = True) -> tuple:
-    """ Split the image and mask paths into training and validation sets
-    :param data: list of training file paths and labels
-    :param test_size: the proportion of the dataset to include in the test split
-    :param shuffle_status: whether to shuffle the data before splitting
-    :return: the training and validation sets for image and mask paths
-    """
-    if shuffle_status:
-        shuffle(data)
-
-    index: int = int(len(data) * (1 - test_size))
-    train_data: list[tuple[str, int]] = data[:index]
-    valid_data: list[tuple[str, int]] = data[index:]
-
-    train_paths: list[str] = [path for path, _ in train_data]
-    train_labels: list[int] = [label for _, label in train_data]
-    valid_paths: list[str] = [path for path, _ in valid_data]
-    valid_labels: list[int] = [label for _, label in valid_data]
-
-    print(f"Test: {len(train_paths)} comment paths, {len(train_labels)} labels")
-    print(f"Validation: {len(valid_paths)} comment paths, {len(valid_labels)} labels")
-
-    return train_paths, train_labels, valid_paths, valid_labels
-
-
-@timer
-def save_json(json_data: dict, json_path: str | Path) -> None:
-    with open(str(json_path), "w", encoding="utf-8") as file:
-        dump(json_data, file, indent=2)
-
-    print(f"JSON data saved to {json_path}.")
-
-
-@timer
-def load_json(json_path: str | Path) -> dict:
-    """ Load JSON data from a file
-    :param json_path: path to the JSON file
-    :return: data loaded from the JSON file
-    """
-    with open(str(json_path), "r", encoding="utf-8") as file:
-        data: dict = load(file)
-
-    print(f"JSON data loaded from {json_path}:")
-
-    return data
-
-
-@timer
-def standardise_data(data: DataFrame, is_tensor: bool = False) -> tuple[DataFrame | Tensor, ColumnTransformer]:
-    """ Preprocess the data by handling missing values, scaling numerical features, and encoding categorical features.
-    :param data: the DataFrame containing the selected features for training
-    :param is_tensor: whether to return a torch Tensor instead of a DataFrame
-    :return: the preprocessed data and the fitted ColumnTransformer
-    """
-    # Divide the columns into numerical and categorical types
-    cols_num: list[str] = data.select_dtypes(include=["int32", "int64", "float32", "float64"]).columns.tolist()
-    cols_cat: list[str] = data.select_dtypes(include=["object", "category"]).columns.tolist()
-
-    # Set a list of transformers to collect the pipelines
-    transformers: list[tuple[str, Pipeline, list[str]]] = []
-
-    # Establish a pipe to process numerical features and handle missing values only if they exist
-    if cols_num:
-        pipe_num = Pipeline(steps=[
-            ("imputer", SimpleImputer(strategy="median")),
-            ("scaler", StandardScaler()),
-        ])
-        transformers.append(("num", pipe_num, cols_num))
-
-    # Establish a pipe to process categorical features and handle missing values only if they exist
-    if cols_cat:
-        pipe_cat = Pipeline(steps=[
-            ("imputer", SimpleImputer(strategy="most_frequent")),
-            ("encoder", OneHotEncoder(handle_unknown="ignore"))
-        ])
-        transformers.append(("cat", pipe_cat, cols_cat))
-
-    # Establish a column transformer to process numerical and categorical features
-    preprocessor: ColumnTransformer = ColumnTransformer(transformers=transformers)
-    # Fit and transform the data
-    out = preprocessor.fit_transform(data)
-
-    # If the processed data is a sparse matrix, convert it to a dense array
-    if hasattr(out, "toarray"):
-        out: ndarray = out.toarray()
-
-    # Return DataFrame or Tensor
-    if not is_tensor:
-        # Rebuild the DataFrame with processed data and proper column names
-        output: DataFrame = DataFrame(data=out, columns=preprocessor.get_feature_names_out())
-    else:
-        # Build the torch tensor with processed data and proper column names
-        # - tensor dtype is not quite suitable for PCA
-        output: Tensor = tensor(out, dtype=float32)
-
-    print(f"Preprocessed data type is {type(output)}, and its shape: {output.shape}")
-
-    return output, preprocessor
-
-
-@timer
-def split_array(
+def split_train(
         features: DataFrame | list, labels: DataFrame | list,
         valid_size: float = 0.2, random_state: int = 27, shuffle_status: bool = True
 ) -> tuple:
@@ -299,7 +198,147 @@ def split_array(
 
 
 @timer
-def select_pca_importance(data: DataFrame, threshold: float = 0.95, top_n: int = None) -> tuple[list, PCA, DataFrame]:
+def split_features(features: list[tuple[str, int]], features_size: float = 0.2, shuffle_status: bool = True) -> tuple:
+    """ Split the image and mask paths into training and validation sets
+    :param features: list of training file paths and labels
+    :param features_size: the proportion of the dataset to include in the test split
+    :param shuffle_status: whether to shuffle the data before splitting
+    :return: the training and validation sets for image and mask paths
+    """
+    if shuffle_status:
+        shuffle(features)
+
+    index: int = int(len(features) * (1 - features_size))
+    train_data: list[tuple[str, int]] = features[:index]
+    valid_data: list[tuple[str, int]] = features[index:]
+
+    train_paths: list[str] = [path for path, _ in train_data]
+    train_labels: list[int] = [label for _, label in train_data]
+    valid_paths: list[str] = [path for path, _ in valid_data]
+    valid_labels: list[int] = [label for _, label in valid_data]
+
+    print(f"Test: {len(train_paths)} comment paths, {len(train_labels)} labels")
+    print(f"Validation: {len(valid_paths)} comment paths, {len(valid_labels)} labels")
+
+    return train_paths, train_labels, valid_paths, valid_labels
+
+
+@timer
+def split_data(features: DataFrame, labels: DataFrame, randomness: int = 27, shuffle_status: bool = True) -> tuple:
+    """ Split the image and mask paths into training and validation sets
+    :param features: DataFrame of features
+    :param labels: DataFrame of labels
+    :param randomness: random seed for reproducibility
+    :param shuffle_status: whether to shuffle the data before splitting
+    :return: the training and validation sets for image and mask paths
+    """
+    assert len(features) == len(labels), "The number of features must be equal to the number of labels."
+
+    X_train, X_temp, y_train, y_temp = train_test_split(
+        features, labels,
+        test_size=0.3,
+        random_state=randomness,
+        shuffle=shuffle_status,
+    )
+    X_valid, X_prove, y_valid, y_prove = train_test_split(
+        X_temp, y_temp,
+        test_size=0.5,
+        random_state=randomness,
+        shuffle=shuffle_status,
+    )
+    print(f"Training set: {X_train.shape}, {y_train.shape}")
+    print(f"Validation set: {X_valid.shape}, {y_valid.shape}")
+    print(f"Proving set: {X_prove.shape}, {y_prove.shape}")
+
+    return X_train, X_valid, X_prove, y_train, y_valid, y_prove
+
+
+@timer
+def save_json(json_data: dict, json_path: str | Path) -> None:
+    with open(str(json_path), "w", encoding="utf-8") as file:
+        dump(json_data, file, indent=2)
+
+    print(f"JSON data saved to {json_path}.")
+
+
+@timer
+def load_json(json_path: str | Path) -> dict:
+    """ Load JSON data from a file
+    :param json_path: path to the JSON file
+    :return: data loaded from the JSON file
+    """
+    with open(str(json_path), "r", encoding="utf-8") as file:
+        data: dict = load(file)
+
+    print(f"JSON data loaded from {json_path}:")
+
+    return data
+
+
+@timer
+def create_data_transformer(data: DataFrame) -> ColumnTransformer:
+    """ Preprocess the data by handling missing values, scaling numerical features, and encoding categorical features.
+    :param data: the DataFrame containing the selected features for training
+    :return: the fitted ColumnTransformer
+    """
+    # Divide the columns into numerical and categorical types
+    cols_num: list[str] = data.select_dtypes(include=["int32", "int64", "float32", "float64"]).columns.tolist()
+    cols_cat: list[str] = data.select_dtypes(include=["object", "category"]).columns.tolist()
+
+    # Set a list of transformers to collect the pipelines
+    transformers: list[tuple[str, Pipeline, list[str]]] = []
+
+    # Establish a pipe to process numerical features and handle missing values only if they exist
+    if cols_num:
+        pipe_num = Pipeline(steps=[
+            ("imputer", SimpleImputer(strategy="median")),
+            ("scaler", StandardScaler()),
+        ])
+        transformers.append(("num", pipe_num, cols_num))
+
+    # Establish a pipe to process categorical features and handle missing values only if they exist
+    if cols_cat:
+        pipe_cat = Pipeline(steps=[
+            ("imputer", SimpleImputer(strategy="most_frequent")),
+            ("encoder", OneHotEncoder(handle_unknown="ignore"))
+        ])
+        transformers.append(("cat", pipe_cat, cols_cat))
+
+    # Establish a column transformer to process numerical and categorical features
+    preprocessor: ColumnTransformer = ColumnTransformer(transformers=transformers)
+    # Fit and transform the data
+    preprocessor.fit(data)
+
+    print(f"Preprocessed data type is {type(preprocessor)}")
+
+    return preprocessor
+
+
+@timer
+def transform_data(data: DataFrame, preprocessor: ColumnTransformer, is_tensor: bool = False) -> DataFrame | Tensor:
+    """ Transform the data using the provided preprocessor"""
+    out = preprocessor.transform(data)
+
+    # If the processed data is a sparse matrix, convert it to a dense array
+    if hasattr(out, "toarray"):
+        out: ndarray = out.toarray()
+
+    # Return DataFrame or Tensor
+    if not is_tensor:
+        # Rebuild the DataFrame with processed data and proper column names
+        output: DataFrame = DataFrame(data=out, columns=preprocessor.get_feature_names_out())
+    else:
+        # Build the torch tensor with processed data and proper column names
+        # - tensor dtype is not quite suitable for PCA
+        output: Tensor = tensor(out, dtype=float32)
+
+    print(f"Preprocessed data type is {type(output)}, and its shape: {output.shape}")
+
+    return output
+
+
+@timer
+def pca_importance(data: DataFrame, threshold: float = 0.95, top_n: int = None) -> tuple[list, PCA, DataFrame]:
     """ Calculate PCA feature importance
     :param data: the DataFrame containing the selected features for training
     :param threshold: the cumulative variance ratio threshold to consider
@@ -341,6 +380,92 @@ def select_pca_importance(data: DataFrame, threshold: float = 0.95, top_n: int =
     pprint(ratios.loc[important_features, "Contribution"].values)
 
     return important_features, model, ratios
+
+
+@timer
+def get_correlation_btw_features(features: DataFrame, top_n: int = 20) -> None:
+    """ Display the strongest feature correlations
+    :param features: the DataFrame containing the selected features for training
+    :param top_n: the number of top correlation pairs to display
+    """
+    corr_matrix = features.corr()
+
+    # Collect correlation pairs
+    corr_pairs: list = []
+    for i in range(len(corr_matrix.columns)):
+        for j in range(i + 1, len(corr_matrix.columns)):
+            feature_i, feature_ii = corr_matrix.columns[i], corr_matrix.columns[j]
+            corr = corr_matrix.iloc[i, j]
+            corr_pairs.append((feature_i, feature_ii, corr))
+
+    # Sort correlation pairs by absolute correlation value in descending order
+    corr_pairs.sort(key=lambda x: abs(x[2]), reverse=True)
+
+    print("Top Feature Correlations:")
+    amount: int = len(corr_pairs) if top_n is None else min(top_n, len(corr_pairs))
+    for i, (feature_i, feature_ii, corr) in enumerate(corr_pairs[:amount]):
+        strength = "★★★" if abs(corr) > 0.7 else " ★★" if abs(corr) > 0.5 else "  ★"
+        direction = "↑" if corr > 0 else "↓"
+        print(f"{i + 1:03d}. {strength} {feature_i:30s} {direction} {feature_ii:30s} : {corr:6.3f}")
+
+
+def get_cat_correlation(categories: Series, measurements: Series) -> float:
+    """ Correlation Ratio (η) for categorical → numerical association.
+    :param categories: categorical variable
+    :param measurements: numerical variable
+    :return: correlation ratio value
+    """
+    categories = categories.astype("category")
+    cat_values = categories.cat.categories
+
+    means: list[float] = []
+    counts: list[int] = []
+    for cat in cat_values:
+        vals = measurements[categories == cat]
+        means.append(vals.mean())
+        counts.append(vals.count())
+
+    overall_mean = measurements.mean()
+    numerator = np_sum(counts * (array(means) - overall_mean) ** 2)
+    denominator = np_sum((measurements - overall_mean) ** 2)
+
+    return sqrt(float(numerator) / float(denominator)) if denominator != 0 else 0.0
+
+
+@timer
+def get_correlation_btw_Xy(X: DataFrame, y: Series, top_n: int = 20, threshold: float = 0.05) -> list[str]:
+    """ Get the correlation of features with the label
+    :param X: the DataFrame containing the selected features for training
+    :param y: the Series containing the target values
+    :param top_n: the number of top correlation pairs to display
+    :param threshold: the minimum absolute correlation value to consider
+    """
+    # Divide the columns into numerical and categorical types
+    cols_num: list[str] = X.select_dtypes(include=["int32", "int64", "float32", "float64"]).columns.tolist()
+    cols_cat: list[str] = X.select_dtypes(include=["object", "category"]).columns.tolist()
+
+    correlations: list[tuple[str, float]] = []
+
+    # Calculate correlations of numerical features with the label
+    for col in cols_num:
+        corr = X[col].corr(y)
+        correlations.append((col, corr))
+    # Calculate correlations of categorical features with the label
+    for col in cols_cat:
+        corr = get_cat_correlation(X[col], y)
+        correlations.append((col, corr))
+
+    # Sort correlations by absolute correlation value in descending order
+    correlations.sort(key=lambda x: abs(x[1]), reverse=True)
+
+    print("Top Feature Correlations with Label:")
+    amount = len(correlations) if top_n is None else min(top_n, len(correlations))
+    for i, (feature, corr) in enumerate(correlations[:amount], 1):
+        strength = "★★★" if abs(corr) > 0.7 else " ★★" if abs(corr) > 0.5 else "  ★"
+        direction = "↑" if corr > 0 else "↓"
+        print(f"{i:03d}. {strength} {feature:30s} {direction} : {corr:6.3f}")
+
+    return [name for name, corr in correlations if abs(corr) >= threshold][:top_n]
 
 
 if __name__ == "__main__":
