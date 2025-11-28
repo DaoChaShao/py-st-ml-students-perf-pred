@@ -31,11 +31,13 @@ Architecture Features:
 __author__ = "Shawn Yu"
 __version__ = "0.1.0"
 
+from .regression import RegressionTorchModel
 from .sem_standard4 import Standard4LayersUNet
 from .sem_standard5 import Standard5LayersUNet
 from .seq_classes import RNNModelForClassification
 
 __all__ = [
+    "RegressionTorchModel",
     "Standard4LayersUNet",
     "Standard5LayersUNet",
     "RNNModelForClassification",
