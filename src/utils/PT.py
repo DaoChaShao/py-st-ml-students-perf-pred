@@ -9,7 +9,7 @@
 from numpy import ndarray, random as np_random
 from pandas import DataFrame
 from random import seed as rnd_seed, getstate, setstate
-from torch import (cuda, backends, Tensor, tensor, float32, int64, long,
+from torch import (cuda, backends, Tensor, tensor, float32,
                    manual_seed, get_rng_state, set_rng_state)
 from torch.utils.data import Dataset, DataLoader, Sampler
 
@@ -179,7 +179,7 @@ def df2tensor(data: DataFrame, is_label: bool = False, accelerator: str = "cpu",
     :return: the converted PyTorch tensor
     """
     if is_label:
-        t: Tensor = tensor(data.values, dtype=int64, device=accelerator, requires_grad=is_grad)
+        t: Tensor = tensor(data.values, dtype=float32, device=accelerator, requires_grad=is_grad)
     else:
         t: Tensor = tensor(data.values, dtype=float32, device=accelerator, requires_grad=is_grad)
 
