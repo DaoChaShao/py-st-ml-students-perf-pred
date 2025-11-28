@@ -15,14 +15,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 @dataclass
 class FilePaths:
-    SEM_SEG_MODEL: Path = BASE_DIR / "models/sem_seg_model.pth"
-    SEQ_CLASSES_MODEL: Path = BASE_DIR / "models/seq_classes_model.pth"
-    SPACY_MODEL_EN: Path = BASE_DIR / "models/spacy/en_core_web_md"
-    SPACY_MODEL_ZH: Path = BASE_DIR / "models/spacy/zh_core_web_md"
-    STANZA_MODEL: Path = BASE_DIR / "models/stanza"
-    TRAIN: Path = BASE_DIR / "data/train/"
-    TEST: Path = BASE_DIR / "data/test/"
-    DICTIONARY: Path = BASE_DIR / "data/dictionary.json"
+    SAVED_MODEL: Path = BASE_DIR / "models/model.pth"
+    DATA_CSV: Path = BASE_DIR / "data/student-mat.csv"
 
 
 @dataclass
@@ -40,8 +34,8 @@ class DataPreprocessor:
 
 @dataclass
 class ModelParams:
-    DROPOUT_RATE: float = 0.3
-    FC_HIDDEN_UNITS: int = 128
+    DROPOUT_RATE: float = 0.2
+    HIDDEN_UNITS: int = 256
 
 
 @dataclass
@@ -69,8 +63,8 @@ class UNetParams:
 
 @dataclass
 class Hyperparameters:
-    ALPHA: float = 1e-4
-    EPOCHS: int = 100
+    ALPHA: float = 3e-4
+    EPOCHS: int = 50
     DECAY: float = 1e-4
     ACCELERATOR: str = "cuda" if cuda.is_available() else "cpu"
 
