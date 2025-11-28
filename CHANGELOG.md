@@ -1,10 +1,21 @@
 <!-- insertion marker -->
 <a name="0.1.0"></a>
 
-## [0.1.0](https://github.com///compare/fab183404da628781aea3fe154020d224efbc985...0.1.0) (2025-11-27)
+## [0.1.0](https://github.com///compare/fab183404da628781aea3fe154020d224efbc985...0.1.0) (2025-11-28)
 
 ### Features
 
+- enhance data handling with new split and correlation functions in stats.py ([eacab0d](https://github.com///commit/eacab0d27778c1bc68f5545e8aa686edc74288d8))
+- add RegressionTorchTrainer class for managing training process of regression models ([9c62608](https://github.com///commit/9c6260844e3764875ff706c6cd4749d296fe5c0b))
+- add RegressionTorchModel class for fully connected neural network ([22ba642](https://github.com///commit/22ba64225bad0d6cf017e4f93b6bc41c102d47b9))
+- add model.pth ([cb51a46](https://github.com///commit/cb51a4626e132bf849d812d53b79e7b30828d0ed))
+- implement data preprocessing and preparation for regression model training ([04cbc85](https://github.com///commit/04cbc858646b81e09e00e522f3c14708a0166c75))
+- add RegressionTorchDatasetForPrediction class for handling label features and labels ([c3a2241](https://github.com///commit/c3a2241652ef7fe33e2f12986c7fd8d4ecefe9a0))
+- update model paths and parameters in config.py ([5885697](https://github.com///commit/58856977e4bff19b08abe49929cbb5a214388775))
+- update module exports to include new data transformation functions ([e26fd89](https://github.com///commit/e26fd89eafb4ecaa91ce0eba504d6db4b2746686))
+- add RegressionTorchModel to module exports ([44282d7](https://github.com///commit/44282d707fadb6eb979147865cd55e3b96f05bd0))
+- add RegressionTorchDatasetForPrediction to module exports ([9795e91](https://github.com///commit/9795e91c26f15acd6eb25fb663b5f011ca29a2aa))
+- add CHANGELOG.md for version 0.1.0 with feature and bug fix summaries ([bdfee7f](https://github.com///commit/bdfee7fc1cc0ad13c5335ecfcc9de4f76b4992c4))
 - update uv.lock to include pillow dependency ([a644db8](https://github.com///commit/a644db8e80d21c4b42807495ba99fd036c9c4db6))
 - add pillow dependency for image processing ([2cd22b2](https://github.com///commit/2cd22b2eba62c48c4dac8f8bd3e34ac88cb1c640))
 - add uv.lock ([e7df97e](https://github.com///commit/e7df97e653d3a9e8374e7cea903a89b764bfd9ef))
