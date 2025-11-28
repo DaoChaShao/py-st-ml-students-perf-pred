@@ -23,7 +23,13 @@ The dataset contains educational records of secondary school students from two P
 **FEATURES**
 ---
 
-
++ **Data Import and Processing**: Import CSV files, automatically separate features and labels, and preprocess data.
++ **Feature Analysis**: Perform correlation analysis and PCA to rank feature importance and identify key factors.
++ **Grade Prediction**: Predict student grades (e.g., final scores) using a pre-trained MLP model.
++ **Error Analysis**: Calculate evaluation metrics such as MSE, MAE, and RMSE to assess prediction accuracy.
++ **Model Loading and Saving**: Load trained models for consistent predictions and save trained models for future use.
++ **Visualization**: Visualize feature importance and compare predicted vs actual values.
++ **Cross-Platform Compatibility**: Desktop-compatible, supports GPU acceleration and batch computation.
 
 **PRIVACY NOTICE**
 ---
