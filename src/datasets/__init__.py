@@ -31,6 +31,7 @@ Utilities:
 __author__ = "Shawn Yu"
 __version__ = "0.1.0"
 
+from .label_regression import RegressionTorchDatasetForPrediction
 from .label_classes import LabelTorchDatasetForClassification
 from .mask_map import mask_map_class_id
 from .reshaper import reshape_to_grayscale
@@ -39,6 +40,7 @@ from .seq_classes import SeqTorchDatasetForClassification
 from .seq_prediction import SeqTorchDatasetForPrediction
 
 __all__ = [
+    "RegressionTorchDatasetForPrediction",
     "LabelTorchDatasetForClassification",
     "mask_map_class_id",
     "reshape_to_grayscale",
