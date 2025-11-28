@@ -124,9 +124,9 @@ def main() -> None:
         # Initialize the Regression Model
         model = RegressionTorchModel(
             features=feature_size,
-            hidden_units=CONFIG.MODEL_PARAMS.HIDDEN_UNITS,
+            hidden_units=CONFIG.MLP_PARAMS.HIDDEN_UNITS,
             out_size=1,
-            dropout_rate=CONFIG.MODEL_PARAMS.DROPOUT_RATE,
+            dropout_rate=CONFIG.MLP_PARAMS.DROPOUT_RATE,
         )
         model.summary()
 
